@@ -47,11 +47,19 @@ namespace SotSItemRebalance.Items
             LanguageAPI.Add("ITEM_LOWERHEALTHHIGHERDAMAGE", desc + ".");
         }
 
-        // TODO 
         private void UpdateItemDef()
         {
             // load original asset from game
-            //ItemDef itemDef = Addressables.LoadAssetAsync<ItemDef>("Ror2")
+            ItemDef itemDef = Addressables.LoadAssetAsync<ItemDef>("RoR2/Items/LowerHealthHigherDamage/LowerHealthHigherDamage.asset").WaitForCompletion();
+            if (itemDef)
+            {
+                List<ItemTag> itemTags = itemDef.tags.ToList();
+                // enemies can have this item
+                itemTags.Remove(ItemTag.AIBlacklist);
+                // Mythrix can have this item
+                itemDef.Remove(ItemTag.BrotherBlacklist);
+                itemDef.tags = itemTags.ToArray();
+            }
         }
 
         private void Hooks()
